@@ -1,33 +1,34 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <iostream>
 
-main(int argc, char **argv)
-{
-    if(argc<2)
-        exit(1);
+int main(int argc, char **argv) {
+    if(argc < 2) {
+        printf("Не были введены обязательные параметры!\n"
+               "Запустите программу с ними!");
+        return 1;
+    }
 
-    int i, j;
-    int c_char;
+    int i = 0, j = 0, c_char;
     unsigned char buffer[2048];
-    char msg[2048];
-    char *key = argv[1];
-    scanf("%[^\t\n]", &msg);
+    char msg[2048], *key = argv[1];
+    scanf("%[^\t\n]", (char *) &msg);
 
-    for(i=j=0;i<strlen(msg);i++,j++) {
-        if(j>=strlen(key))
-            j=0;
+    for(;i < strlen(msg); i++, j++) {
+        if(j >= strlen(key))
+            j = 0;
         c_char = msg[i] ^ key[j];
-        /* This insures that the cipher letters are human-readable letters and not some 
-         * special characters.
-         * Actual letters start from the code 32 in ASCII.
+        /* Это гарантия того, что зашифрованные буквы будут представлять собой удобочитаемые буквы,
+         * а не некоторые специальные символы.
+         * Фактические буквы начинаются с кода 32 в ASCII.
          */
         if(c_char < 32)
             c_char += 32;
         buffer[i] = c_char;
-     }
-     buffer[i] = '\0';
-     printf("Message: %s\nKey: %s\n", msg, key);
-     printf("Encrypted: %s\n", buffer);
-
+    }
+    buffer[i] = '\0';
+    printf("Сообщения: %s\nКлюч: %s\n", msg, key);
+    printf("Зашифрованное сообщение: %s\n", buffer);
+    return 0;
 }
